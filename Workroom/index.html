@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=UTF-8 />
+    <!-- <link rel="stylesheet" type="text/css" href="/Room/styles.css" /> -->
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            color: white;
+            }
+
+            .screen {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin:0;
+            padding:0;
+            
+            }
+
+            .title {
+            color: wheat;
+            }
+
+    </style>
+  </head>
+  <body>
+    <script src="../three.js"></script>
+    <script src="../OrbitControls.js"></script>
+    <h1 class="title">Work-Room</h1>
+    <section class="screen" id="screen">
+
+    </section>
+    <script>
+      let scene, camera, renderer;
+
+      function init() {
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(55,window.innerWidth/window.innerHeight,45,100000);
+        camera.position.set(0,0,-900);
+        const screen = document.getElementById("screen");
+
+        renderer = new THREE.WebGLRenderer({antialias:true});
+        renderer.setSize(window.innerWidth-100,window.innerHeight-200);
+        screen.appendChild(renderer.domElement);
+
+        let controls = new THREE.OrbitControls(camera);
+        controls.addEventListener('change', renderer);
+        controls.minDistance = 0;
+        controls.maxDistance = 50000;
+        
+        let materialArray = [];
+        let texture_ft = new THREE.TextureLoader().load( '../Resources/wallpaper.jpg');
+        let texture_bk = new THREE.TextureLoader().load( '../Resources/wallpaper.jpg');
+        let texture_up = new THREE.TextureLoader().load( '../Resources/sky.jpg');
+        let texture_dn = new THREE.TextureLoader().load( '../Resources/floor.jpg');
+        let texture_rt = new THREE.TextureLoader().load( '../Resources/wallpaper.jpg');
+        let texture_lf = new THREE.TextureLoader().load( '../Resources/wallpaper.jpg');
+          
+        materialArray.push(new THREE.MeshBasicMaterial( { map: texture_ft }));
+        materialArray.push(new THREE.MeshBasicMaterial( { map: texture_bk }));
+        materialArray.push(new THREE.MeshBasicMaterial( { map: texture_up }));
+        materialArray.push(new THREE.MeshBasicMaterial( { map: texture_dn }));
+        materialArray.push(new THREE.MeshBasicMaterial( { map: texture_rt }));
+        materialArray.push(new THREE.MeshBasicMaterial( { map: texture_lf }));
+   
+        for (let i = 0; i < 6; i++)
+           materialArray[i].side = THREE.BackSide;
+
+        let skyboxGeo = new THREE.BoxGeometry( 15000, 10000, 15000);
+        
+        let skybox = new THREE.Mesh( skyboxGeo, materialArray );
+        scene.add( skybox );  
+
+        // let lineMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff })
+        // const points = []
+        // points.push( new THREE.Vector3( - 100, 100, 100 ) );
+        // points.push( new THREE.Vector3( 0, 10, 0 ) );
+        // points.push( new THREE.Vector3( 100, 0, 0 ) );
+        // const lineGeo = new THREE.BufferGeometry().setFromPoints( points );
+        // const line = new THREE.Line( lineGeo, lineMaterial );
+        // scene.add(line)
+        let lineMaterial = new THREE.LineBasicMaterial({color: 0x0000ff})
+        const verticalPoints = []
+        const horizenPoints = []
+
+        verticalPoints.push(new THREE.Vector3(0,-100,10)) // 점찍기
+        verticalPoints.push(new THREE.Vector3(0,100,10))
+        const verticalLineGeo = new THREE.BufferGeometry().setFromPoints( verticalPoints ); // 점 이어그리기
+        const verticalLine = new THREE.Line( verticalLineGeo, lineMaterial ); // 매테리얼 정해주기
+        scene.add(verticalLine) // 화면에 표시
+
+        horizenPoints.push(new THREE.Vector3(-100,0,10))
+        horizenPoints.push(new THREE.Vector3(100,0,10))
+        const horizenLineGeo = new THREE.BufferGeometry().setFromPoints( horizenPoints );
+        const horizenLine = new THREE.Line( horizenLineGeo, lineMaterial ); // 매테리얼 정해주기
+        scene.add(horizenLine)
+
+        animate();
+      }
+      function animate() {
+        renderer.render(scene,camera);
+        requestAnimationFrame(animate);
+      }
+      init();
+    </script>
+  </body>
+</html>
