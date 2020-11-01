@@ -33,6 +33,15 @@
             color: wheat;
             }
 
+            #greeting {
+                position: absolute;
+                top: 10px;
+                width: 100%;
+                text-align: center;
+                z-index: 100;
+                display:block;
+            }
+
     </style>
   </head>
   <body>
@@ -40,11 +49,10 @@
     <script src="../OrbitControls.js"></script>
     <h1 class="title">Work-Room</h1>
     <section class="screen" id="screen">
-
+    <p id="greeting">Welcome to Jiwon's Room!</p>
     </section>
     <script>
       let scene, camera, renderer;
-
       function init() {
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(55,window.innerWidth/window.innerHeight,45,100000);
@@ -91,22 +99,56 @@
         // const lineGeo = new THREE.BufferGeometry().setFromPoints( points );
         // const line = new THREE.Line( lineGeo, lineMaterial );
         // scene.add(line)
-        let lineMaterial = new THREE.LineBasicMaterial({color: 0x0000ff})
-        const verticalPoints = []
-        const horizenPoints = []
+        function createCrossHead() {
+            
+            let lineMaterial = new THREE.LineBasicMaterial({color: 0x0000ff})
+            const verticalPoints = []
+            const horizenPoints = []
+    
+            verticalPoints.push(new THREE.Vector3(0,-100,10)) // 점찍기
+            verticalPoints.push(new THREE.Vector3(0,100,10))
+            const verticalLineGeo = new THREE.BufferGeometry().setFromPoints( verticalPoints ); // 점 이어그리기
+            const verticalLine = new THREE.Line( verticalLineGeo, lineMaterial ); // 매테리얼 정해주기
+            scene.add(verticalLine) // 화면에 표시
+    
+            horizenPoints.push(new THREE.Vector3(-100,0,10))
+            horizenPoints.push(new THREE.Vector3(100,0,10))
+            const horizenLineGeo = new THREE.BufferGeometry().setFromPoints( horizenPoints );
+            const horizenLine = new THREE.Line( horizenLineGeo, lineMaterial ); // 매테리얼 정해주기
+            scene.add(horizenLine)
 
-        verticalPoints.push(new THREE.Vector3(0,-100,10)) // 점찍기
-        verticalPoints.push(new THREE.Vector3(0,100,10))
-        const verticalLineGeo = new THREE.BufferGeometry().setFromPoints( verticalPoints ); // 점 이어그리기
-        const verticalLine = new THREE.Line( verticalLineGeo, lineMaterial ); // 매테리얼 정해주기
-        scene.add(verticalLine) // 화면에 표시
+        }
+     
+        function createTexts() {
+            const loader = new THREE.FontLoader();
+            loader.load( '../Resources/fonts/SlimSummer.json', function ( font ) {
+                const textGeometry = new THREE.TextGeometry( 'Welcome to Jiwon Room!', {
+                    font: font,
+                    size: 100,
+                    height: 5,
+                    curveSegments: 12,
+                    bevelEnabled: true,
+                    bevelThickness: 10,
+                    bevelSize: 8,
+                    bevelOffset: 1,
+                    bevelSegments: 5,
+                } );
+                const textMaterial = new THREE.MeshPhongMaterial(
+                    { color: 0x00ff00 , specular: 0x000000 }
+                )
 
-        horizenPoints.push(new THREE.Vector3(-100,0,10))
-        horizenPoints.push(new THREE.Vector3(100,0,10))
-        const horizenLineGeo = new THREE.BufferGeometry().setFromPoints( horizenPoints );
-        const horizenLine = new THREE.Line( horizenLineGeo, lineMaterial ); // 매테리얼 정해주기
-        scene.add(horizenLine)
+                const mesh = new THREE.Mesh( textGeometry, textMaterial)
 
+                scene.add(mesh)
+            } );
+        }
+        // const text = new THREE.TextGeometry( text, parameters );
+       
+  
+        createCrossHead()
+        createTexts()
+
+       
         animate();
       }
       function animate() {
