@@ -9,7 +9,9 @@
 		</style>
 	</head>
 	<body>
-		<script src="./js/three.js"></script>
+        <script src="../three.js"></script>
+		<script src="../OrbitControls.js"></script>
+        
 		<script>
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(
@@ -18,7 +20,9 @@
         const renderer = new THREE.WebGLRenderer()
         renderer.setSize( window.innerWidth/1.5, window.innerHeight/1.5)
         document.body.appendChild(renderer.domElement)
-
+        
+        // let controls = new THREE.OrbitControls(camera)
+        // controls.addEventListener("change", renderer)
         const geometry = new THREE.BoxGeometry();
         const material = new THREE.MeshBasicMaterial({color: 0x00ff00})
         const cube = new THREE.Mesh(geometry,material)
