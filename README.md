@@ -23,6 +23,7 @@ https://threejsfundamentals.org/threejs/lessons/threejs-custom-geometry.html
 - 3d text generating
 
 https://stackoverflow.com/questions/35589984/textgeometry-in-three-js
+https://stackoverflow.com/questions/48037356/text-isnt-rendered-correctly-using-textgeometry-three-js
 
 ### Inspired By.
 
