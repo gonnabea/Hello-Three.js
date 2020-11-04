@@ -143,12 +143,23 @@
                 scene.add(mesh)
             } );
         }
+
+        function createBox() {
+          const boxGeometry = new THREE.BoxGeometry()
+          const boxMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00})
+          const box = new THREE.Mesh(boxGeometry,boxMaterial)
+          box.scale.x = 5000
+          box.scale.y = 3000
+          box.scale.z = 1500
+          box.position.set(0,-3000,-6500);
+          scene.add(box)
+        }
         // const text = new THREE.TextGeometry( text, parameters );
        
   
         createCrossHead()
         createTexts()
-
+        createBox()
        
         animate();
       }
