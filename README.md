@@ -25,6 +25,10 @@ https://threejsfundamentals.org/threejs/lessons/threejs-custom-geometry.html
 https://stackoverflow.com/questions/35589984/textgeometry-in-three-js
 https://stackoverflow.com/questions/48037356/text-isnt-rendered-correctly-using-textgeometry-three-js
 
+- Ray Caster (마우스이벤트 인식 원리)
+
+https://threejs.org/docs/#api/en/core/Raycaster
+
 ### Inspired By.
 
 - https://mixedreality.mozilla.org/hello-webxr/
