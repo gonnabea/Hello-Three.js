@@ -31,6 +31,10 @@ https://threejs.org/docs/#api/en/core/Raycaster
 
 https://github.com/jeromeetienne/threex.domevents
 
+- 3D Models
+
+https://sketchfab.com/feed
+
 ### Inspired By.
 
 - https://mixedreality.mozilla.org/hello-webxr/
@@ -40,6 +44,8 @@ https://github.com/jeromeetienne/threex.domevents
 - https://www.youtube.com/watch?v=b3vP6wfpqWE
 
 - https://tympanus.net/Development/Exhibition/
+
+- https://www.youtube.com/watch?v=LadpP5XR1aM
 
 ### Ideas...
 

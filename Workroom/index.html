@@ -57,7 +57,8 @@
       let scene, camera, renderer;
       function init() {
         scene = new THREE.Scene();
-        camera = new THREE.PerspectiveCamera(55,window.innerWidth/window.innerHeight,45,100000);
+        camera = new THREE.PerspectiveCamera(55,window.innerWidth/window.innerHeight,100,100000);
+        camera.enableDamping = true
         camera.position.set(0,0,-900);
         const screen = document.getElementById("screen");
 
@@ -67,8 +68,51 @@
 
         let controls = new THREE.OrbitControls(camera);
         controls.addEventListener('change', renderer);
-        controls.minDistance = 0;
-        controls.maxDistance = 50000;
+        controls.minDistance = -15000;
+        controls.maxDistance = 15000;
+        controls.mouseButtons = {
+          LEFT: THREE.MOUSE.ROTATE,
+          MIDDLE: THREE.MOUSE.DOLLY,
+          RIGHT: THREE.MOUSE.PAN
+        }
+        controls.panSpeed = 0
+
+          const raycaster = new THREE.Raycaster()
+          const mouse = new THREE.Vector2()
+
+        function onMouseMove(event) {
+          mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+          mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+          createRaycaster()
+        }
+        function createRaycaster() {
+
+        function render() {
+          raycaster.setFromCamera( mouse, camera )
+
+          const intersects = raycaster.intersectObjects( scene.children )
+
+          for ( let i = 0; i < intersects.length; i++ ) {
+            const material = intersects[i].object.material
+            if(material.color){
+              window.addEventListener( 'click', function(){
+                intersects[i].object.material.color.set( 0xED6AC3 )
+              });
+            
+              console.log(material)
+              
+            }else{
+            }
+
+          }
+            renderer.render( scene, camera );
+
+          
+        }
+
+        window.addEventListener( 'mousemove', onMouseMove, false );
+        window.requestAnimationFrame(render);
+       }
         
         let materialArray = [];
         let texture_ft = new THREE.TextureLoader().load( '../Resources/wallpaper3.jpg');
@@ -171,21 +215,23 @@
    object.rotateZ(THREE.Math.degToRad(degreeZ));
 }
        function createDesk() {
-         const light = new THREE.PointLight(0xc4c4c4,10)
-         light.position.set(0,-7200,-9500)
-         scene.add(light)
 
-         const light2 = new THREE.PointLight(0xc4c4c4,10)
-         light2.position.set(500,-7400,-10000)
-         scene.add(light2)
+         const light = new THREE.PointLight(0xFFFFFF,2)
+         light.position.set(-4000,-3000,-10500)
+         scene.add(light) // 왼쪽 안
 
-         const light3 = new THREE.PointLight(0xc4c4c4,10)
-         light3.position.set(0,-7400,-10500)
+         const light2 = new THREE.PointLight(0xFFFFFF,2)
+         light2.position.set(-4000,-3000,-7500)
+         scene.add(light2) // 왼쪽 바깥
+
+         const light3 = new THREE.PointLight(0xFFFFFF,2)
+         light3.position.set(4000,-3000,-7500)
          scene.add(light3)
 
-         const light4 = new THREE.PointLight(0xc4c4c4,10)
-         light4.position.set(-500,-7200,-10000)
+         const light4 = new THREE.PointLight(0xFFFFFF,2)
+         light4.position.set(000,-3000,-12500)
          scene.add(light4)
+
 
          const loader = new THREE.GLTFLoader()
          loader.load('../Resources/models/desk_low-poly/scene.gltf', function(gltf){
@@ -204,7 +250,7 @@
         // createBox()
         // createCrossHead()
         createTexts()
-
+        createRaycaster()
        
         animate();
       }
