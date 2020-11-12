@@ -50,12 +50,13 @@
     <script src='../threex.domevents.js'></script>
     <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
     <h1 class="title">Work-Room</h1>
+    <em id="targetMarker">탐색하세요!</em>
     <section class="three.js" id="screen">
     <p id="greeting">Welcome to Jiwon's Room!</p>
     </section>
     <script>
       let scene, camera, renderer;
-      
+      const targetMarker = document.getElementById("targetMarker")
       function init() {
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(55,window.innerWidth/window.innerHeight,100,100000);
@@ -63,10 +64,9 @@
         camera.position.set(0,0,-900);
         const screen = document.getElementById("screen");
 
-        renderer = new THREE.WebGLRenderer({antialias:true});
+        renderer = new THREE.WebGLRenderer({alpha:true,antialias:true});
         renderer.setSize(window.innerWidth-100,window.innerHeight-200);
         screen.appendChild(renderer.domElement);
-
         let controls = new THREE.OrbitControls(camera);
         controls.addEventListener('change', renderer);
         controls.minDistance = -15000;
@@ -91,7 +91,7 @@
         function render() {
           raycaster.setFromCamera( mouse, camera )
 
-          const intersects = raycaster.intersectObjects( scene.children, true )
+          const intersects = raycaster.intersectObjects( scene.children, true ) // 두번째 argument를 true로 설정 시 group도 인식
 
           
     
@@ -99,27 +99,41 @@
           
             const material = intersects[0].object.material
               // console.log(material)
-              function openGithub() {
-              window.open("https://github.com/gonnabea")
-              console.log("dfsjdflksjdksfdjkl")
+              function openSite(sitename) {
+              if(sitename==="github"){
+                window.open("https://github.com/gonnabea")
+              }
+              else if(sitename==="book"){
+                window.open("https://just-read-it.herokuapp.com/")
+              }
+              else if(sitename === "nomflix"){
+                window.open("https://nomfilx-jiwon.netlify.app/#/")
+              }
             }
             function changeColor() {
               intersects[0].object.material.color.set( Math.random() * 0xED6AC3 )
             }
             if(material.name === "greetingMsg"){
             screen.style.cursor = 'pointer'
-            screen.onclick = changeColor
+            targetMarker.innerText = "Hello!"
+            screen.onmousedown = changeColor
             }
             else if(material.name){
               screen.style.cursor = 'pointer'
               console.log(material.name)
-              screen.onclick = openGithub
+              targetMarker.innerText = material.name
               console.log(material)
+              if(material.name === "7355608"){
+                screen.onmousedown = () => openSite("nomflix")
+              }else{
+                
+              }
             }
             else{
-              screen.style.cursor = 'default'
+            screen.style.cursor = 'default'
             console.dir(material)
-            screen.onclick = null
+            targetMarker.innerText = "탐색하세요!"
+            screen.onmousedown = null
             }
 
           
@@ -198,7 +212,7 @@
                     curveSegments: 12,
                     bevelEnabled: true,
                     bevelThickness: 10,
-                    bevelSize: 8,
+                    bevelSize: 20,
                     bevelOffset: 1,
                     bevelSegments: 5,
                 } );
@@ -206,7 +220,7 @@
                 textMaterial.color.setHex( Math.random() * 0xffffff );
                 textMaterial.name = "greetingMsg"
                 const mesh = new THREE.Mesh( textGeometry, textMaterial)
-                mesh.position.set(-2500,1000,-12000)
+                mesh.position.set(-2500,3000,-12000)
                 scene.add(mesh)
             } );
         }
@@ -236,37 +250,67 @@
 }
        function createDesk() {
 
-         const light = new THREE.PointLight(0xFFFFFF,2)
-         light.position.set(-4000,-3000,-10500)
-         scene.add(light) // 왼쪽 안
+        //  const light = new THREE.PointLight(0xFFFFFF,2)
+        //  light.position.set(-4000,-3000,-10500)
+        //  scene.add(light) // 왼쪽 안
 
-         const light2 = new THREE.PointLight(0xFFFFFF,2)
-         light2.position.set(-4000,-3000,-7500)
-         scene.add(light2) // 왼쪽 바깥
+        //  const light2 = new THREE.PointLight(0xFFFFFF,2)
+        //  light2.position.set(-4000,-3000,-7500)
+        //  scene.add(light2) // 왼쪽 바깥
 
-         const light3 = new THREE.PointLight(0xFFFFFF,2)
-         light3.position.set(4000,-3000,-7500)
-         scene.add(light3)
+        //  const light3 = new THREE.PointLight(0xFFFFFF,2)
+        //  light3.position.set(4000,-3000,-7500)
+        //  scene.add(light3)
 
-         const light4 = new THREE.PointLight(0xFFFFFF,2)
-         light4.position.set(000,-3000,-12500)
-         scene.add(light4)
+        //  const light4 = new THREE.PointLight(0xFFFFFF,2)
+        //  light4.position.set(000,-3000,-12500)
+        //  scene.add(light4)
 
 
          const loader = new THREE.GLTFLoader()
          loader.load('../Resources/models/desk_low-poly/scene.gltf', function(gltf){
            const desk = gltf.scene.children[0]
            desk.scale.set(20,20,20)
-           console.log(gltf.scene)
            desk.position.set(0,-7500,-10000)
-           scene.add(gltf.scene)
+          //  scene.add(gltf.scene)
            renderer.render(scene,camera)
            rotateObject(desk, 0, 0, -90);
          })
 
        }
 
+       function createDesk2() {
+
+        const light = new THREE.PointLight(0xFFFFFF,2)
+         light.position.set(-4000,-2000,-10500)
+         scene.add(light) // 왼쪽 안
+
+         const light2 = new THREE.PointLight(0xFFFFFF,2)
+         light2.position.set(-4000,-2000,-7500)
+         scene.add(light2) // 왼쪽 바깥
+
+         const light3 = new THREE.PointLight(0xFFFFFF,2)
+         light3.position.set(4000,-2000,-7500)
+         scene.add(light3)
+
+         const light4 = new THREE.PointLight(0xFFFFFF,2)
+         light4.position.set(000,-2000,-12500)
+         scene.add(light4)
+
+         const loader = new THREE.GLTFLoader()
+         loader.load('../Resources/models/low_poly_gaming_desk/scene.gltf', (gltf) => {
+          const desk = gltf.scene.children[0]
+          desk.scale.set(2000,2000,2000)
+          desk.position.set(3000,-3000,-7000)
+          console.log(desk)
+          
+          scene.add(desk)
+       
+         })
+       }
+
        createDesk()
+       createDesk2()
         // createBox()
         // createCrossHead()
         createTexts()
