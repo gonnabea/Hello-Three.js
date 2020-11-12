@@ -55,6 +55,7 @@
     </section>
     <script>
       let scene, camera, renderer;
+      
       function init() {
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(55,window.innerWidth/window.innerHeight,100,100000);
@@ -90,27 +91,45 @@
         function render() {
           raycaster.setFromCamera( mouse, camera )
 
-          const intersects = raycaster.intersectObjects( scene.children )
+          const intersects = raycaster.intersectObjects( scene.children, true )
 
-          for ( let i = 0; i < intersects.length; i++ ) {
-            const material = intersects[i].object.material
-            if(material.color){
-              window.addEventListener( 'click', function(){
-                intersects[i].object.material.color.set( 0xED6AC3 )
-              });
-            
+          
+    
+          // console.log(intersects)
+          
+            const material = intersects[0].object.material
+              // console.log(material)
+              function openGithub() {
+              window.open("https://github.com/gonnabea")
+              console.log("dfsjdflksjdksfdjkl")
+            }
+            function changeColor() {
+              intersects[0].object.material.color.set( Math.random() * 0xED6AC3 )
+            }
+            if(material.name === "greetingMsg"){
+            screen.style.cursor = 'pointer'
+            screen.onclick = changeColor
+            }
+            else if(material.name){
+              screen.style.cursor = 'pointer'
+              console.log(material.name)
+              screen.onclick = openGithub
               console.log(material)
-              
-            }else{
+            }
+            else{
+              screen.style.cursor = 'default'
+            console.dir(material)
+            screen.onclick = null
             }
 
-          }
+          
+         
             renderer.render( scene, camera );
 
           
         }
 
-        window.addEventListener( 'mousemove', onMouseMove, false );
+        window.addEventListener('mousemove', onMouseMove, false );
         window.requestAnimationFrame(render);
        }
         
@@ -185,6 +204,7 @@
                 } );
                 const textMaterial = new THREE.MeshPhongMaterial( { color: 0xff0000, specular: 0xffffff } );
                 textMaterial.color.setHex( Math.random() * 0xffffff );
+                textMaterial.name = "greetingMsg"
                 const mesh = new THREE.Mesh( textGeometry, textMaterial)
                 mesh.position.set(-2500,1000,-12000)
                 scene.add(mesh)
@@ -237,7 +257,7 @@
          loader.load('../Resources/models/desk_low-poly/scene.gltf', function(gltf){
            const desk = gltf.scene.children[0]
            desk.scale.set(20,20,20)
-           
+           console.log(gltf.scene)
            desk.position.set(0,-7500,-10000)
            scene.add(gltf.scene)
            renderer.render(scene,camera)
