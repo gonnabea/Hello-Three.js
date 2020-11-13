@@ -57,12 +57,12 @@
     <script>
       let scene, camera, renderer;
       const targetMarker = document.getElementById("targetMarker")
+      const screen = document.getElementById("screen");
       function init() {
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(55,window.innerWidth/window.innerHeight,100,100000);
         camera.enableDamping = true
         camera.position.set(0,0,-900);
-        const screen = document.getElementById("screen");
 
         renderer = new THREE.WebGLRenderer({alpha:true,antialias:true});
         renderer.setSize(window.innerWidth-100,window.innerHeight-200);
@@ -248,38 +248,9 @@
    object.rotateY(THREE.Math.degToRad(degreeY));
    object.rotateZ(THREE.Math.degToRad(degreeZ));
 }
+
+
        function createDesk() {
-
-        //  const light = new THREE.PointLight(0xFFFFFF,2)
-        //  light.position.set(-4000,-3000,-10500)
-        //  scene.add(light) // 왼쪽 안
-
-        //  const light2 = new THREE.PointLight(0xFFFFFF,2)
-        //  light2.position.set(-4000,-3000,-7500)
-        //  scene.add(light2) // 왼쪽 바깥
-
-        //  const light3 = new THREE.PointLight(0xFFFFFF,2)
-        //  light3.position.set(4000,-3000,-7500)
-        //  scene.add(light3)
-
-        //  const light4 = new THREE.PointLight(0xFFFFFF,2)
-        //  light4.position.set(000,-3000,-12500)
-        //  scene.add(light4)
-
-
-         const loader = new THREE.GLTFLoader()
-         loader.load('../Resources/models/desk_low-poly/scene.gltf', function(gltf){
-           const desk = gltf.scene.children[0]
-           desk.scale.set(20,20,20)
-           desk.position.set(0,-7500,-10000)
-          //  scene.add(gltf.scene)
-           renderer.render(scene,camera)
-           rotateObject(desk, 0, 0, -90);
-         })
-
-       }
-
-       function createDesk2() {
 
         const light = new THREE.PointLight(0xFFFFFF,2)
          light.position.set(-4000,-2000,-10500)
@@ -309,8 +280,54 @@
          })
        }
 
+       function createChair(){
+         const loader = new THREE.GLTFLoader()
+         loader.load("../Resources/models/gaming_chair_free_download/scene.gltf", (gltf) => {
+           const chair = gltf.scene.children[0]
+           chair.scale.set(20,20,20)
+           rotateObject(chair, 0,0,180)
+           chair.position.set(2500,-8000,-4000)
+           scene.add(chair)
+         })
+       }
+
+       function createGuitar(){
+        const loader = new THREE.GLTFLoader()
+         loader.load("../Resources/models/classic_guitar/scene.gltf", (gltf) => {
+           const guitar = gltf.scene.children[0]
+           guitar.scale.set(100,100,100)
+           guitar.position.set(-6000,-1000,10000)
+           rotateObject(guitar,90,120,0)
+           console.log(guitar)
+           scene.add(guitar)
+         })
+       }
+       
+       function createBed(){
+        const loader = new THREE.GLTFLoader()
+         loader.load("../Resources/models/messy_bed/scene.gltf", (gltf) => {
+           const bed = gltf.scene.children[0]
+           bed.scale.set(50,50,50)
+           bed.position.set(3500,-8000,6000)
+           rotateObject(bed, 0,0,180)
+           scene.add(bed)
+         })
+       }
+
+       function createRefrigerator(){
+        const loader = new THREE.GLTFLoader()
+         loader.load("../Resources/models/refrigerator/scene.gltf", (gltf) => {
+           const refirgerator = gltf.scene.children[0]
+           refirgerator.scale.set(2000,2000,2000)
+           scene.add(refirgerator)
+         })
+       }
+
        createDesk()
-       createDesk2()
+       createChair()
+       createGuitar()
+       createBed()
+       createRefrigerator()
         // createBox()
         // createCrossHead()
         createTexts()
