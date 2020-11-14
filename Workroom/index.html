@@ -48,6 +48,7 @@
     <script src="../three.js"></script>
     <script src="../OrbitControls.js"></script>
     <script src='../threex.domevents.js'></script>
+    <script src='../CSS3DRenderer.js'></script>
     <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
     <h1 class="title">Work-Room</h1>
     <em id="targetMarker">탐색하세요!</em>
@@ -55,16 +56,18 @@
     <p id="greeting">Welcome to Jiwon's Room!</p>
     </section>
     <script>
-      let scene, camera, renderer;
+      let scene, camera, renderer, glScene, cssScene;
       const targetMarker = document.getElementById("targetMarker")
       const screen = document.getElementById("screen");
       function init() {
         scene = new THREE.Scene();
+        glScene = new THREE.Scene()
+        cssScene = new THREE.Scene()
         camera = new THREE.PerspectiveCamera(55,window.innerWidth/window.innerHeight,100,100000);
         camera.enableDamping = true
         camera.position.set(0,0,-900);
 
-        renderer = new THREE.WebGLRenderer({alpha:true,antialias:true});
+        renderer = new THREE.WebGLRenderer({antialias: true, alpha:true, preserveDrawingBuffer: true});
         renderer.setSize(window.innerWidth-100,window.innerHeight-200);
         screen.appendChild(renderer.domElement);
         let controls = new THREE.OrbitControls(camera);
@@ -109,6 +112,10 @@
               else if(sitename === "nomflix"){
                 window.open("https://nomfilx-jiwon.netlify.app/#/")
               }
+              else if(sitename === "guitar"){
+                window.open("https://www.youtube.com/watch?v=g5WB-p-QBJc")
+
+              }
             }
             function changeColor() {
               intersects[0].object.material.color.set( Math.random() * 0xED6AC3 )
@@ -123,9 +130,10 @@
               console.log(material.name)
               targetMarker.innerText = material.name
               console.log(material)
-              if(material.name === "7355608"){
+              if(material.name === "7355608"){ // 모니터
                 screen.onmousedown = () => openSite("nomflix")
-              }else{
+              }else if(material.name === "guitar"){
+                screen.onmousedown = () => openSite("guitar")
                 
               }
             }
@@ -197,6 +205,7 @@
             scene.add(horizenLine)
 
         }
+
      
         function createTexts() {
             // const pointLight = new THREE.PointLight(0xffffff, 1.5); 
@@ -250,6 +259,18 @@
 }
 
 
+      function unifyGroupMesh(mesh,name){ // 모든 구성요소 이름 통일화
+        if(mesh.children.length === 1){
+          const meshChild = mesh.children[0]
+          unifyGroupMesh(meshChild,name)
+        }
+        else{
+          mesh.children.map(child => {
+            child.material.name = name
+          })
+        }
+      }
+
        function createDesk() {
 
         const light = new THREE.PointLight(0xFFFFFF,2)
@@ -298,6 +319,7 @@
            guitar.scale.set(100,100,100)
            guitar.position.set(-6000,-1000,10000)
            rotateObject(guitar,90,120,0)
+           unifyGroupMesh(guitar,"guitar")
            console.log(guitar)
            scene.add(guitar)
          })
@@ -323,11 +345,44 @@
          })
        }
 
+       function embedWebsite(){
+        let divString = '<div>' +
+'<h1>This is an H1 Element.</h1>' +
+'<span class="large">Hello Three.js cookbook</span>' +
+'<textarea> And this is a textarea</textarea>' +
+'</div>';
+
+function createCSS3DObject(s) {
+  // convert the string to dome elements
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = s;
+  const div = wrapper.firstChild;
+
+  // set some values on the div to style it, standard CSS
+  div.style.width = '375px';
+  div.style.height = '375px';
+  div.style.opacity = 1;
+  div.style['will-change'] = 'all'
+  div.style.transition = 'top 0.2s linear'
+  div.style.background = new THREE.Color(Math.random() * 0xffffff).getStyle();
+  // create a CSS3Dobject and return it.
+  const object = new THREE.CSS3DObject(div);
+  return object;
+}
+
+const cssElement = createCSS3DObject(divString);
+cssElement.scale.set(1000,1000,1000)
+cssElement.position.set(0,0,0)
+console.log(cssElement)
+cssScene.add(cssElement); 
+
+       }
+       embedWebsite()
        createDesk()
        createChair()
        createGuitar()
        createBed()
-       createRefrigerator()
+      //  createRefrigerator()
         // createBox()
         // createCrossHead()
         createTexts()

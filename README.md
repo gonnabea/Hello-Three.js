@@ -49,6 +49,21 @@ https://sketchfab.com/feed
 
 - https://sketchfab.com/3d-models/richards-art-gallery-audio-tour-0e3e19faa6474fd5974e6a7ed1b221d8
 
+- https://activetheory.net/work
+
 ### Ideas...
 
 - 3d 노마드코더 로고 😁
+- HTML/CSS/JS UI + Three.js Graphic : css ui로 Three.js 그래픽 조작
+- Three.js UI + HTML/CSS/JS 스크린 : Three.js UI로 웹사이트 조작
+
+### ToDo
+
+- [x] 3d Text
+- [x] 3D 모델 불러오기
+- [x] 마우스 이벤트리스너
+- [ ] Embed Website to Three.js
+- [ ] Camera Control with Event
+- [ ] HTML in Three.js (canvas)
+- [ ] Mouse Effect
+- [ ] animation in three.js
