@@ -48,12 +48,16 @@
     <script src="../three.js"></script>
     <script src="../OrbitControls.js"></script>
     <script src='../threex.domevents.js'></script>
-    <script src='../CSS3DRenderer.js'></script>
     <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
+    <script src='../CSS3DRenderer.js'></script>
+    <script src='../TrackballControls.js'></script>
+
     <h1 class="title">Work-Room</h1>
     <em id="targetMarker">탐색하세요!</em>
     <section class="three.js" id="screen">
     <p id="greeting">Welcome to Jiwon's Room!</p>
+    <div id="iframeContainer"></div>
+    <div id="blocker"></div>
     </section>
     <script>
       let scene, camera, renderer, glScene, cssScene;
@@ -208,10 +212,6 @@
 
      
         function createTexts() {
-            // const pointLight = new THREE.PointLight(0xffffff, 1.5); 
-            // pointLight.position.set(0, 100, 90); // 조명 추가
-            // scene.add(pointLight);
-            // pointLight.color.setHSL(Math.random(), 1, 0.5);
             const loader = new THREE.FontLoader();
             loader.load( '../Resources/fonts/DoHyeon.json', function ( font ) {
                 const textGeometry = new THREE.TextGeometry( "Jiwon's.Room", {
@@ -320,7 +320,7 @@
            guitar.position.set(-6000,-1000,10000)
            rotateObject(guitar,90,120,0)
            unifyGroupMesh(guitar,"guitar")
-           console.log(guitar)
+          
            scene.add(guitar)
          })
        }
@@ -345,50 +345,93 @@
          })
        }
 
-       function embedWebsite(){
-        let divString = '<div>' +
-'<h1>This is an H1 Element.</h1>' +
-'<span class="large">Hello Three.js cookbook</span>' +
-'<textarea> And this is a textarea</textarea>' +
-'</div>';
 
-function createCSS3DObject(s) {
-  // convert the string to dome elements
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = s;
-  const div = wrapper.firstChild;
 
-  // set some values on the div to style it, standard CSS
-  div.style.width = '375px';
-  div.style.height = '375px';
-  div.style.opacity = 1;
-  div.style['will-change'] = 'all'
-  div.style.transition = 'top 0.2s linear'
-  div.style.background = new THREE.Color(Math.random() * 0xffffff).getStyle();
-  // create a CSS3Dobject and return it.
-  const object = new THREE.CSS3DObject(div);
-  return object;
+       function createIframe(){
+        const iframeContainer = document.getElementById("iframeContainer")
+
+        const Element = function (id, x, y, z , ry) {
+          const div = document.createElement('div')
+          div.style.width = "480px"
+          div.style.height = "360px"
+          div.style.backgroundColor = "#000"
+
+          const iframe = document.createElement("iframe")
+          iframe.style.width = "480px";
+          iframe.style.height = "360px";
+          iframe.style.border = '0px';
+          iframe.src = [ 'https://www.youtube.com/embed/', id, '?rel=0' ].join( '' );
+          div.appendChild( iframe )
+
+          const object = new THREE.CSS3DObject( div )
+          object.position.set( x,y,z )
+          object.rotation.y = ry;
+
+          return object
+        }
+
+        function init() {
+          const renderer = new THREE.CSS3DRenderer();
+        renderer.setSize( window.innerWidth, window.innerHeight )
+        iframeContainer.appendChild( renderer.domElement )
+
+          const group = new THREE.Group()
+          group.add( new Element( 'SJOz3qjfQXU', 0, 0, 240, 0 ) );
+				group.add( new Element( 'Y2-xZ-1HE-Q', 240, 0, 0, Math.PI / 2 ) );
+				group.add( new Element( 'IrydklNpcFI', 0, 0, - 240, Math.PI ) );
+        group.add( new Element( '9ubytEsCaS0', - 240, 0, 0, - Math.PI / 2 ) );
+        group.scale.set(100,100,100)
+        group.position.set(100,100,100)
+        scene.add( group );
+        console.log(group)
+
+        controls = new THREE.TrackballControls( camera, renderer.domElement );
+				controls.rotateSpeed = 4;
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+				// Block iframe events when dragging camera
+
+				var blocker = document.getElementById( 'blocker' );
+				blocker.style.display = 'none';
+
+				controls.addEventListener( 'start', function () {
+
+					blocker.style.display = '';
+
+				} );
+				controls.addEventListener( 'end', function () {
+
+					blocker.style.display = 'none';
+
+				} );
+
+
+        
+        }
+        init()
+
+        function onWindowResize() {
+
+camera.aspect = window.innerWidth / window.innerHeight;
+camera.updateProjectionMatrix();
+renderer.setSize( window.innerWidth, window.innerHeight );
+
 }
-
-const cssElement = createCSS3DObject(divString);
-cssElement.scale.set(1000,1000,1000)
-cssElement.position.set(0,0,0)
-console.log(cssElement)
-cssScene.add(cssElement); 
-
        }
-       embedWebsite()
+
        createDesk()
        createChair()
        createGuitar()
        createBed()
-      //  createRefrigerator()
-        // createBox()
-        // createCrossHead()
-        createTexts()
-        createRaycaster()
+       //  createRefrigerator()
+       // createBox()
+       // createCrossHead()
+       createTexts()
+       createRaycaster()
        
-        animate();
+       createIframe()
+       animate();
       }
       function animate() {
         renderer.setClearColor(15790320);
