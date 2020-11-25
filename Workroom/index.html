@@ -65,8 +65,7 @@
       const screen = document.getElementById("screen");
       function init() {
         scene = new THREE.Scene();
-        glScene = new THREE.Scene()
-        cssScene = new THREE.Scene()
+        
         camera = new THREE.PerspectiveCamera(55,window.innerWidth/window.innerHeight,100,100000);
         camera.enableDamping = true
         camera.position.set(0,0,-900);
@@ -83,7 +82,7 @@
           MIDDLE: THREE.MOUSE.DOLLY,
           RIGHT: THREE.MOUSE.PAN
         }
-        controls.panSpeed = 0
+        controls.panSpeed = 4
 
           const raycaster = new THREE.Raycaster()
           const mouse = new THREE.Vector2()
@@ -93,16 +92,18 @@
           mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
           createRaycaster()
         }
+
+        // 마우스이벤트 인식
         function createRaycaster() {
 
         function render() {
           raycaster.setFromCamera( mouse, camera )
 
-          const intersects = raycaster.intersectObjects( scene.children, true ) // 두번째 argument를 true로 설정 시 group도 인식
+          const intersects = raycaster.intersectObjects( scene.children, true ) // 두번째 argument를 true로 설정 시 group mesh도 인식
 
           
     
-          // console.log(intersects)
+          console.log(intersects)
           
             const material = intersects[0].object.material
               // console.log(material)
@@ -120,10 +121,118 @@
                 window.open("https://www.youtube.com/watch?v=g5WB-p-QBJc")
 
               }
+              
             }
+
+            function changeSight(material) {
+  console.log(material);
+  const positionX = intersects[0].point.x;
+  const positionY = intersects[0].point.y;
+  const positionZ = intersects[0].point.z;
+  const cameraX = camera.position.x;
+  const cameraY = camera.position.y;
+  const cameraZ = camera.position.z;
+
+  // 부드러운 카메라 전환을 위한 알고리즘
+
+  if (parseInt(camera.position.x) !== parseInt(positionX)) {
+    const moveX = setInterval(() => {if (parseInt(camera.position.x) < parseInt(positionX)) {
+     
+      controls.enabled = false;
+      camera.position.set(
+        camera.position.x + 10,
+        camera.position.y,
+        camera.position.z
+      );
+      camera.lookAt(controls.target);
+      controls.enabled = true;
+    } else if (parseInt(camera.position.x) > parseInt(positionX)) {
+
+      controls.enabled = false;
+      camera.position.set(
+        camera.position.x - 10,
+        camera.position.y,
+        camera.position.z
+      );
+    }
+    camera.lookAt(controls.target);
+    controls.enabled = true;
+    if(parseInt(camera.position.x) - parseInt(positionX) <= 51 && parseInt(camera.position.x) - parseInt(positionX) >= -51){
+        clearInterval(moveX)
+        alert("X제거")
+      }
+  },0.001)
+    
+  }
+  if (parseInt(camera.position.y) !== parseInt(positionY)) {
+    const moveY = setInterval(() => {if (cameraY < positionY) {
+      controls.enabled = false;
+      camera.position.set(
+        camera.position.x,
+        camera.position.y + 10,
+        camera.poscition.z
+      );
+      camera.lookAt(controls.target);
+      controls.enabled = true;
+    } else if (parseInt(cameraY) > parseInt(positionY)) {
+      controls.enabled = false;
+      camera.position.set(
+        camera.position.x,
+        camera.position.y - 10,
+        camera.position.z
+      );
+      camera.lookAt(controls.target);
+      controls.enabled = true;
+
+      if(parseInt(camera.position.y) - parseInt(positionY) <= 51 && parseInt(camera.position.y) - parseInt(positionY) >= -51){
+        clearInterval(moveY)
+        alert("Y제거")
+
+      }
+    }},0.001)
+  }
+  if (parseInt(camera.position.z) !== parseInt(positionZ)) {
+    const moveZ = setInterval(() => {if (cameraZ < positionZ) {
+      console.log(camera.position.z)
+      console.log(positionZ)
+      controls.enabled = false;
+      camera.position.set(
+        camera.position.x,
+        camera.position.y,
+        camera.position.z + 10
+      );
+      camera.lookAt(controls.target);
+      controls.enabled = true;
+      if(parseInt(camera.position.z) - parseInt(positionZ) <= 51 && parseInt(camera.position.z) - parseInt(positionZ) >= -51){
+        clearInterval(moveZ)
+        alert("Z제거")
+
+      }
+    } else if (parseInt(cameraZ) > parseInt(positionZ)) {
+      controls.enabled = false;
+      camera.position.set(
+        camera.position.x,
+        camera.position.y,
+        camera.position.z - 10
+      );
+      camera.lookAt(controls.target);
+      controls.enabled = true;
+      if(parseInt(camera.position.z) - parseInt(positionZ) <= 51 && parseInt(camera.position.z) - parseInt(positionZ) >= -51){
+        clearInterval(moveZ)
+        alert("Z제거")
+
+      }
+    }}, 0.001)
+
+  }
+
+  // camera.position.set(positionX,positionY,positionZ)
+}
+
             function changeColor() {
               intersects[0].object.material.color.set( Math.random() * 0xED6AC3 )
-            }
+            } 
+            // 마우스이벤트 적용 목록
             if(material.name === "greetingMsg"){
             screen.style.cursor = 'pointer'
             targetMarker.innerText = "Hello!"
@@ -138,7 +247,9 @@
                 screen.onmousedown = () => openSite("nomflix")
               }else if(material.name === "guitar"){
                 screen.onmousedown = () => openSite("guitar")
-                
+              }
+              else if(material.name === "Sheet"){
+                screen.onmousedown = () => changeSight(material)
               }
             }
             else{
@@ -347,78 +458,77 @@
 
 
 
-       function createIframe(){
-        const iframeContainer = document.getElementById("iframeContainer")
+//        function createIframe(){
+//         const iframeContainer = document.getElementById("iframeContainer")
 
-        const Element = function (id, x, y, z , ry) {
-          const div = document.createElement('div')
-          div.style.width = "480px"
-          div.style.height = "360px"
-          div.style.backgroundColor = "#000"
+//         const Element = function (id, x, y, z , ry) {
+//           const div = document.createElement('div')
+//           div.style.width = "480px"
+//           div.style.height = "360px"
+//           div.style.backgroundColor = "#000"
 
-          const iframe = document.createElement("iframe")
-          iframe.style.width = "480px";
-          iframe.style.height = "360px";
-          iframe.style.border = '0px';
-          iframe.src = [ 'https://www.youtube.com/embed/', id, '?rel=0' ].join( '' );
-          div.appendChild( iframe )
+//           const iframe = document.createElement("iframe")
+//           iframe.style.width = "480px";
+//           iframe.style.height = "360px";
+//           iframe.style.border = '0px';
+//           iframe.src = [ 'https://www.youtube.com/embed/', id, '?rel=0' ].join( '' );
+//           div.appendChild( iframe )
 
-          const object = new THREE.CSS3DObject( div )
-          object.position.set( x,y,z )
-          object.rotation.y = ry;
+//           const object = new THREE.CSS3DObject( div )
+//           object.position.set( x,y,z )
+//           object.rotation.y = ry;
 
-          return object
-        }
+//           return object
+//         }
+//         init()
+        
+//         function init() {
+//           const renderer = new THREE.CSS3DRenderer();
+//         renderer.setSize( window.innerWidth, window.innerHeight )
+//         iframeContainer.appendChild( renderer.domElement )
 
-        function init() {
-          const renderer = new THREE.CSS3DRenderer();
-        renderer.setSize( window.innerWidth, window.innerHeight )
-        iframeContainer.appendChild( renderer.domElement )
+//         const group = new THREE.Group()
+//         group.add( new Element( 'SJOz3qjfQXU', 0, 0, 240, 0 ) );
+// 				group.add( new Element( 'Y2-xZ-1HE-Q', 240, 0, 0, Math.PI / 2 ) );
+// 				group.add( new Element( 'IrydklNpcFI', 0, 0, - 240, Math.PI ) );
+//         group.add( new Element( '9ubytEsCaS0', - 240, 0, 0, - Math.PI / 2 ) );
+        
+//         scene.add( group );
+//         console.log(group)
 
-          const group = new THREE.Group()
-          group.add( new Element( 'SJOz3qjfQXU', 0, 0, 240, 0 ) );
-				group.add( new Element( 'Y2-xZ-1HE-Q', 240, 0, 0, Math.PI / 2 ) );
-				group.add( new Element( 'IrydklNpcFI', 0, 0, - 240, Math.PI ) );
-        group.add( new Element( '9ubytEsCaS0', - 240, 0, 0, - Math.PI / 2 ) );
-        group.scale.set(100,100,100)
-        group.position.set(100,100,100)
-        scene.add( group );
-        console.log(group)
+        
 
-        controls = new THREE.TrackballControls( camera, renderer.domElement );
-				controls.rotateSpeed = 4;
+// 				window.addEventListener( 'resize', onWindowResize, false );
 
-				window.addEventListener( 'resize', onWindowResize, false );
+// 				// Block iframe events when dragging camera
 
-				// Block iframe events when dragging camera
+// 				const blocker = document.getElementById( 'blocker' );
+// 				blocker.style.display = 'none';
 
-				var blocker = document.getElementById( 'blocker' );
-				blocker.style.display = 'none';
+// 				controls.addEventListener( 'start', function () {
 
-				controls.addEventListener( 'start', function () {
+// 					blocker.style.display = '';
 
-					blocker.style.display = '';
+// 				} );
+// 				controls.addEventListener( 'end', function () {
 
-				} );
-				controls.addEventListener( 'end', function () {
+// 					blocker.style.display = 'none';
 
-					blocker.style.display = 'none';
-
-				} );
+// 				} );
 
 
         
-        }
-        init()
+//         }
+        
 
-        function onWindowResize() {
+//         function onWindowResize() {
 
-camera.aspect = window.innerWidth / window.innerHeight;
-camera.updateProjectionMatrix();
-renderer.setSize( window.innerWidth, window.innerHeight );
+// camera.aspect = window.innerWidth / window.innerHeight;
+// camera.updateProjectionMatrix();
+// renderer.setSize( window.innerWidth, window.innerHeight );
 
-}
-       }
+// }
+//        }
 
        createDesk()
        createChair()
@@ -430,12 +540,14 @@ renderer.setSize( window.innerWidth, window.innerHeight );
        createTexts()
        createRaycaster()
        
-       createIframe()
-       animate();
+      //  createIframe()
       }
       function animate() {
+        animate();
         renderer.setClearColor(15790320);
         renderer.render(scene,camera);
+        
+        controls.update();
         requestAnimationFrame(animate);
       }
       init();

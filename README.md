@@ -62,8 +62,7 @@ https://sketchfab.com/feed
 - [x] 3d Text
 - [x] 3D 모델 불러오기
 - [x] 마우스 이벤트리스너
-- [ ] Embed Website to Three.js
-- [ ] Camera Control with Event
-- [ ] HTML in Three.js (canvas)
+- [x] Camera Control with Event
+- [x] animation in three.js
 - [ ] Mouse Effect
-- [ ] animation in three.js
+- [ ] HTML in Three.js (canvas)

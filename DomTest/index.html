@@ -110,10 +110,21 @@
 				camera.updateProjectionMatrix();
 				renderer.setSize( window.innerWidth, window.innerHeight );
 
-			}
+            }
+            
+            function createBed(){
+        const loader = new THREE.GLTFLoader()
+         loader.load("../Resources/models/messy_bed/scene.gltf", (gltf) => {
+           const bed = gltf.scene.children[0]
+           bed.scale.set(50,50,50)
+           bed.position.set(0,-0,0)
+           console.log(bed)
+           scene.add(bed)
+         })
+       }
 
-			function animate() {
-
+       createBed()
+       function animate() {
 				requestAnimationFrame( animate );
 				controls.update();
 				renderer.render( scene, camera );
