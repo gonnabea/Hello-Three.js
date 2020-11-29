@@ -35,6 +35,10 @@ https://github.com/jeromeetienne/threex.domevents
 
 https://sketchfab.com/feed
 
+- 카메라 애니메이션
+
+https://stackoverflow.com/questions/52607157/move-camera-and-update-its-orbitcontrol-in-three-js
+
 ### Inspired By.
 
 - https://mixedreality.mozilla.org/hello-webxr/
@@ -64,5 +68,40 @@ https://sketchfab.com/feed
 - [x] 마우스 이벤트리스너
 - [x] Camera Control with Event
 - [x] animation in three.js
+- [ ] video in THREE.js canvas
 - [ ] Mouse Effect
 - [ ] HTML in Three.js (canvas)
+
+### Mini-Projects
+
+- [ ] https://threejs.org/examples/#webgl_geometry_cube
+
+- [ ] https://threejs.org/examples/#webgl_camera_array
+
+- [ ] https://threejs.org/examples/#webgl_clipping_intersection
+
+- [ ] https://threejs.org/examples/#css3d_youtube
+
+- [ ] https://threejs.org/examples/#webgl_effects_stereo
+
+- [ ] https://threejs.org/examples/#webgl_effects_anaglyph
+
+- [ ] https://threejs.org/examples/#webgl_instancing_raycast
+
+- [ ] https://threejs.org/examples/#misc_controls_map
+
+- [ ] https://threejs.org/examples/#webgl_lightprobe
+
+- [ ] https://threejs.org/examples/#webgl_materials_car
+
+- [ ] https://threejs.org/examples/#webgl_lensflares
+
+- [ ] https://threejs.org/examples/#webgl_interactive_cubes
+
+- [ ] https://threejs.org/examples/#webgl_lights_hemisphere
+
+- [ ] https://threejs.org/examples/#webgl_shaders_ocean
+
+- [ ] https://threejs.org/examples/#webgl_geometry_minecraft
+
+- [ ] https://threejs.org/examples/#misc_controls_pointerlock

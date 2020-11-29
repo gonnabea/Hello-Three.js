@@ -51,6 +51,7 @@
     <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
     <script src='../CSS3DRenderer.js'></script>
     <script src='../TrackballControls.js'></script>
+    <script type="modules" src='../VideoTexture.js'></script>
 
     <h1 class="title">Work-Room</h1>
     <em id="targetMarker">탐색하세요!</em>
@@ -58,6 +59,7 @@
     <p id="greeting">Welcome to Jiwon's Room!</p>
     <div id="iframeContainer"></div>
     <div id="blocker"></div>
+    
     </section>
     <script>
       let scene, camera, renderer, glScene, cssScene;
@@ -458,77 +460,7 @@
 
 
 
-//        function createIframe(){
-//         const iframeContainer = document.getElementById("iframeContainer")
-
-//         const Element = function (id, x, y, z , ry) {
-//           const div = document.createElement('div')
-//           div.style.width = "480px"
-//           div.style.height = "360px"
-//           div.style.backgroundColor = "#000"
-
-//           const iframe = document.createElement("iframe")
-//           iframe.style.width = "480px";
-//           iframe.style.height = "360px";
-//           iframe.style.border = '0px';
-//           iframe.src = [ 'https://www.youtube.com/embed/', id, '?rel=0' ].join( '' );
-//           div.appendChild( iframe )
-
-//           const object = new THREE.CSS3DObject( div )
-//           object.position.set( x,y,z )
-//           object.rotation.y = ry;
-
-//           return object
-//         }
-//         init()
-        
-//         function init() {
-//           const renderer = new THREE.CSS3DRenderer();
-//         renderer.setSize( window.innerWidth, window.innerHeight )
-//         iframeContainer.appendChild( renderer.domElement )
-
-//         const group = new THREE.Group()
-//         group.add( new Element( 'SJOz3qjfQXU', 0, 0, 240, 0 ) );
-// 				group.add( new Element( 'Y2-xZ-1HE-Q', 240, 0, 0, Math.PI / 2 ) );
-// 				group.add( new Element( 'IrydklNpcFI', 0, 0, - 240, Math.PI ) );
-//         group.add( new Element( '9ubytEsCaS0', - 240, 0, 0, - Math.PI / 2 ) );
-        
-//         scene.add( group );
-//         console.log(group)
-
-        
-
-// 				window.addEventListener( 'resize', onWindowResize, false );
-
-// 				// Block iframe events when dragging camera
-
-// 				const blocker = document.getElementById( 'blocker' );
-// 				blocker.style.display = 'none';
-
-// 				controls.addEventListener( 'start', function () {
-
-// 					blocker.style.display = '';
-
-// 				} );
-// 				controls.addEventListener( 'end', function () {
-
-// 					blocker.style.display = 'none';
-
-// 				} );
-
-
-        
-//         }
-        
-
-//         function onWindowResize() {
-
-// camera.aspect = window.innerWidth / window.innerHeight;
-// camera.updateProjectionMatrix();
-// renderer.setSize( window.innerWidth, window.innerHeight );
-
-// }
-//        }
+       
 
        createDesk()
        createChair()
